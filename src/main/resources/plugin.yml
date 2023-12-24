@@ -1,0 +1,11 @@
+name: AnimationControl
+main: com.wheatstudio.animationcontrol.internal.plugin.AnimationControl
+depend:
+  - AyCore
+  - DragonCore
+  - MythicMobs
+version: ${version}
+commands:
+  animationcontrol:
+    aliases:
+      - "animacl"

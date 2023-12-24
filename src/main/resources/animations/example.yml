@@ -1,0 +1,15 @@
+check-item: "&f测试物品"
+# 玩家使用动画物品后切换物品的左键冷却
+cooldown: 3
+animations:
+  - # 播放的动作
+    animat: "test1"
+    # 玩家使用动画后多久才能进行下一个动作, 单位: 毫秒
+    millisecond: 1000
+    # 玩家使用此动作后多久内再次攻击可以衔接动画, 单位: 毫秒
+    connect-duration: 300
+    # 播放动作时玩家释放的技能
+    skill: "example"
+  - animat: "test2"
+    millisecond: 1000
+    skill: "example"
