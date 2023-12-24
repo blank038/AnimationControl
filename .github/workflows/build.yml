@@ -27,7 +27,7 @@ jobs:
       - name: Gradle Build
         run: |
           chmod 755 ./gradlew
-          ./gradlew clean build
+          ./gradlew clean shadowJar
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
