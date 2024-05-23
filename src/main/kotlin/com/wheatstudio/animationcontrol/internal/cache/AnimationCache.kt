@@ -1,12 +1,13 @@
 package com.wheatstudio.animationcontrol.internal.cache
 
+import org.bukkit.ChatColor
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.configuration.file.YamlConfiguration
 
 class AnimationCache(config: FileConfiguration) {
     private val animationList: MutableList<AnimationNode> = mutableListOf()
-    val checkItem: String = config.getString("check-item")
+    val checkItem: String = ChatColor.translateAlternateColorCodes('&', config.getString("check-item"))
     val cooldown: Int = config.getInt("cooldown")
 
     init {

@@ -29,7 +29,7 @@ class PlayerListener : Listener {
         CacheManager.playerCaches.remove(event.player.name)
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     fun onInteract(event: PlayerInteractEvent) {
         if (event.action != Action.LEFT_CLICK_AIR && event.action != Action.LEFT_CLICK_BLOCK) {
             return
@@ -49,13 +49,14 @@ class PlayerListener : Listener {
                 // 更新玩家动作冷却值, 并播放动作
                 val animationcache: AnimationCache? = CacheManager.animationCaches[it]
                 animationcache?.let { ac ->
+                    event.isCancelled = true
                     val diff: Long = System.currentTimeMillis() - cache.animatCooldown
                     val animationNodes: List<AnimationCache.AnimationNode> = ac.getAnimationList()
                     if (cache.index >= animationNodes.size || diff > animationNodes[cache.index].connectDuration) {
                         cache.index = 0
                     }
                     val animationNode: AnimationCache.AnimationNode = animationNodes[cache.index]
-                    cache.animatCooldown = System.currentTimeMillis() + (1000L * animationNode.millisecond)
+                    cache.animatCooldown = System.currentTimeMillis() + animationNode.millisecond
                     // 播放动作
                     PacketSender.setPlayerAnimation(player, animationNode.animat)
                     // 调用 MythicMobs 技能
@@ -70,13 +71,13 @@ class PlayerListener : Listener {
     fun onHeldItem(event: PlayerItemHeldEvent) {
         val cache: PlayerCache? = CacheManager.playerCaches[event.player.name]
         val animation: String? = cache?.currentAnimation
-        val heldItem: ItemStack? = event.player.inventory.itemInMainHand
+        val heldItem: ItemStack? = event.player.inventory.getItem(event.newSlot)
         animation?.let {
             val animationCache: AnimationCache? = CacheManager.animationCaches[animation]
             val cooldown: Int = animationCache?.cooldown ?: return
             CacheManager.heldCooldown[event.player.name] = System.currentTimeMillis() + (1000L * cooldown)
             cache.currentAnimation = null
-        } ?: also {
+        } ?: run {
             // 判断当前切换的是否为物品
             if (heldItem?.type == Material.AIR) {
                 return
